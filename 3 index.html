@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>ניהול שלוחות – ימות המשיח</title>
+  <style>
+    /* העתק את כל ה-CSS שלך כאן */
+    * { box-sizing:border-box; margin:0; padding:0 }
+    body {
+      font-family: Arial, sans-serif;
+      background: #eef2f5;
+      color: #333;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+    /* … שאר הסגנונות (כמו שהיו לך) … */
+    .card { background:#fff; border-radius:8px; box-shadow:0 2px 8px rgba(0,0,0,0.1); width:100%;max-width:500px; overflow:hidden }
+    .card header { background:#0078d4;color:#fff;padding:1rem;text-align:center;font-size:1.2rem }
+    .card .content { padding:1rem }
+    label { display:block;margin-top:.8rem;font-size:.95rem }
+    input,select,button{width:100%;padding:.7rem;margin-top:.3rem;border:1px solid #ccc;border-radius:4px;font-size:.95rem}
+    button{background:#0078d4;color:#fff;border:none;cursor:pointer;font-weight:bold;margin-top:1rem;transition:background .2s}
+    button:disabled{background:#aaa;cursor:not-allowed} button:hover:not(:disabled){background:#005a9e}
+    .error{color:#c00;font-size:.9rem;margin-top:.3rem}
+    .hidden{display:none}
+    .tabs{display:flex;border-bottom:1px solid #ddd}
+    .tabs button{flex:1;padding:.8rem;background:#f7f9fa;border:none;cursor:pointer;font-weight:bold;transition:background .2s}
+    .tabs button.active{background:#fff;border-bottom:2px solid #0078d4}
+    .section{display:none}.section.active{display:block}
+    #log{background:#fafafa;border:1px solid #ddd;padding:1rem;margin-top:1rem;height:180px;overflow:auto;font-family:monospace;white-space:pre-wrap;font-size:.9rem}
+    .warning{color:#c00;font-weight:bold;margin:.6rem 0}
+  </style>
+</head>
+<body>
+  <div id="loginCard" class="card">
+    <header>🔑 התחברות למערכת</header>
+    <div class="content">
+      <label>מספר מערכת
+        <input type="text" id="loginSystem" placeholder="0771234567"/>
+      </label>
+      <div id="errSys" class="error hidden">יש להזין מספר מערכת</div>
+      <label>קוד גישה
+        <input type="password" id="loginPass"/>
+      </label>
+      <div id="errPass" class="error hidden">יש להזין סיסמה</div>
+      <button id="btnLogin">התחבר</button>
+      <div id="errLogin" class="error hidden"></div>
+    </div>
+  </div>
+
+  <div id="mainCard" class="card hidden">
+    <header>📞 ניהול שלוחות – ימות המשיח</header>
+    <div class="tabs">
+      <button data-sec="create" class="active">יצירת שלוחות</button>
+      <button data-sec="replicate">שכפול שלוחה</button>
+      <button data-sec="resetOne">איפוס שלוחה</button>
+      <button data-sec="resetAll">איפוס מלא</button>
+      <button data-sec="status">מצב חי</button>
+      <button data-sec="help">עזרה</button>
+    </div>
+    <div class="content">
+      <!-- … כאן תדביק את ה-HTML של הטפסים כמו שהיה לך לגמרי -->
+      <!-- רק תשנה את כל הקריאות מפורשות ל־/api/… במקום https://… -->
+    </div>
+    <div id="log"></div>
+  </div>
+
+  <script>
+    // כאן תשים את כל ה־JS שלך (fetch ל־'/api/UploadFile', '/api/DeleteFolder' וכו')
+    // לדוגמה – התחברות:
+    const by=id=>document.getElementById(id);
+    async function login(){
+      // … אותו קוד כמו פה למעלה, אבל:
+      const res = await fetch('/api/Login', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          username: by('loginSystem').value.trim(),
+          password: by('loginPass').value.trim()
+        })
+      });
+      const txt = await res.text();
+      // … שאר העיבוד כמו קודם …
+    }
+    by('btnLogin').onclick = login;
+    // ושאר הפונקציות – פשוט תעדכן שהן קוראות ל־'/api/...' ולא לסרגל ymsrv
+  </script>
+</body>
+</html>
